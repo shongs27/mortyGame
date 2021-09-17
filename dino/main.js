@@ -189,9 +189,9 @@ function Update() {
   spawnTimer--;
   if (spawnTimer <= 0) {
     SpawnObstacle();
-    console.log(obstacles);
     spawnTimer = initialSpawnTimer - gameSpeed * 8;
 
+    //최대빠른 속도
     if (spawnTimer < 60) {
       spawnTimer = 60;
     }
