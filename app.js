@@ -246,31 +246,19 @@ class Text {
 }
 
 function spawnObstacle() {
-  // const r = Math.round(Math.random() * 5);
-  // const obs = new Obstacle(
-  //   imgArr[r],
-  //   imgArr[r].WHsize[0],
-  //   canvas.height - imgArr[r].WHsize[1],
-  //   imgArr[r].WHsize[0],
-  //   imgArr[r].WHsize[1]
-  // );
-
-  // // 날아가는 유형의 장애물이면
-  // if (imgArr[r].appearType === 1) {
-  //   obs.y -= player.originalHeight - 20;
-  // }
-
-  // obstacles.push(obs);
-
-  obstacles.push(
-    new Obstacle(
-      imgArr[2],
-      imgArr[2].WHsize[0],
-      canvas.height - imgArr[2].WHsize[1],
-      imgArr[2].WHsize[0],
-      imgArr[2].WHsize[1]
-    )
+  const r = Math.round(Math.random() * 5);
+  const obs = new Obstacle(
+    imgArr[r],
+    imgArr[r].WHsize[0],
+    canvas.height - imgArr[r].WHsize[1],
+    imgArr[r].WHsize[0],
+    imgArr[r].WHsize[1]
   );
+  // 날아가는 유형의 장애물이면
+  if (imgArr[r].appearType === 1) {
+    obs.y -= player.originalHeight - 20;
+  }
+  obstacles.push(obs);
 }
 
 let skyCnt = 0;

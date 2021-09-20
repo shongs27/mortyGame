@@ -1,3 +1,5 @@
+<img src="https://media.giphy.com/media/BHOIKhAWDvFYOf5ker/giphy.gif?cid=790b761136d1afc0489703174867822f2f61dc07b5d216ce&rid=giphy.gif&ct=g">
+
 <!-- prettier-ignore -->
 - [x] runnerImage - morty.jpg, mortySit.jpg
    모티가 왼쪽에서 달린다, 뛸수 있거나 주저앉을수 있다
@@ -23,3 +25,7 @@
 
 - [x] dino 그림 두개가 쿵쾅쿵쾅 움직인다
       재실행 되지 않는 우주선 오류 fix
+
+===
+
+ctx.drawImage()와 requestAnimationFrame()에 이용방법을 잘 숙지하자
