@@ -31,7 +31,7 @@ function makeObstacle(src, type, w, h) {
 }
 makeObstacle("img/carcass1.png", 0, 150, 80);
 makeObstacle("img/carcass2.png", 0, 150, 80);
-makeObstacle("img/dino.png", 2, 50, 60);
+makeObstacle("img/dino.png", 2, 100, 60);
 makeObstacle("img/pickleRick.jpg", 0, 80, 80);
 makeObstacle("img/birdperson.png", 0, 80, 100);
 makeObstacle("img/friends.png", 1, 200, 100);
@@ -39,7 +39,6 @@ makeObstacle("img/friends.png", 1, 200, 100);
 //state
 let obstacles = [];
 let sky = [];
-let getOff = false;
 let player;
 let cloud;
 let moon;
@@ -117,7 +116,6 @@ class Player {
       this.dy += gravity;
     } else {
       this.grounded = true; //이제 땅에 닿았다
-      getOff = true; // 이제 우주선에서 내렸다(한번만작동)
       this.dy = 0;
       this.y = canvas.height - this.h;
     }
@@ -132,7 +130,7 @@ class Player {
 //////////////////
 //장애물//////////
 /////////////////
-let offset = 0;
+let testOffset = 0;
 class Obstacle {
   constructor(image, x, y, w, h) {
     this.image = image;
@@ -141,6 +139,7 @@ class Obstacle {
     this.w = w;
     this.h = h;
 
+    this.sw = false;
     this.dx = gameSpeed;
   }
 
@@ -150,11 +149,41 @@ class Obstacle {
     this.dx = gameSpeed;
   }
 
+  //err
   draw() {
-    ctx.drawImage(this.image, this.x, this.y, this.w, this.h);
+    testOffset++;
+    if (this.image.appearType === 2) {
+      if (testOffset > 30) {
+        ctx.drawImage(
+          this.image,
+          0,
+          0,
+          91,
+          110,
+          this.x,
+          this.y,
+          this.w,
+          this.h
+        );
+        testOffset > 60 && (testOffset = 0);
+      } else {
+        ctx.drawImage(
+          this.image,
+          91,
+          0,
+          91,
+          110,
+          this.x,
+          this.y,
+          this.w,
+          this.h
+        );
+      }
+    } else ctx.drawImage(this.image, this.x, this.y, this.w, this.h);
   }
 }
 
+let offset = 0;
 class Land extends Obstacle {
   constructor(image, x, y, w, h) {
     super(image, x, y, w, h);
@@ -217,21 +246,31 @@ class Text {
 }
 
 function spawnObstacle() {
-  const r = Math.round(Math.random() * 5);
-  const obs = new Obstacle(
-    imgArr[r],
-    imgArr[r].WHsize[0],
-    canvas.height - imgArr[r].WHsize[1],
-    imgArr[r].WHsize[0],
-    imgArr[r].WHsize[1]
+  // const r = Math.round(Math.random() * 5);
+  // const obs = new Obstacle(
+  //   imgArr[r],
+  //   imgArr[r].WHsize[0],
+  //   canvas.height - imgArr[r].WHsize[1],
+  //   imgArr[r].WHsize[0],
+  //   imgArr[r].WHsize[1]
+  // );
+
+  // // 날아가는 유형의 장애물이면
+  // if (imgArr[r].appearType === 1) {
+  //   obs.y -= player.originalHeight - 20;
+  // }
+
+  // obstacles.push(obs);
+
+  obstacles.push(
+    new Obstacle(
+      imgArr[2],
+      imgArr[2].WHsize[0],
+      canvas.height - imgArr[2].WHsize[1],
+      imgArr[2].WHsize[0],
+      imgArr[2].WHsize[1]
+    )
   );
-
-  // 날아가는 유형의 장애물이면
-  if (imgArr[r].appearType === 1) {
-    obs.y -= player.originalHeight - 20;
-  }
-
-  obstacles.push(obs);
 }
 
 let skyCnt = 0;
@@ -249,8 +288,9 @@ function spawnCloud() {
 ///////////////////////
 ///구동////////////////
 //////////////////////
-let spawnTimer = 200;
+let spawnTimer = 160;
 let cloudTimer = 100;
+let ufoTimer = 0;
 let initialSpawnTimer = spawnTimer;
 let initialCloudTimer = cloudTimer;
 
@@ -258,8 +298,11 @@ function update() {
   mortyGame = requestAnimationFrame(update);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  if (!getOff)
+  //3초동안만
+  ufoTimer++;
+  if (ufoTimer < 20) {
     ctx.drawImage(ufo, 210, 78, 340, 179, canvas.width - 180, 5, 150, 80);
+  }
 
   //장애물생성
   spawnTimer--;
@@ -308,8 +351,7 @@ function update() {
         500,
         40
       );
-      getOff = false;
-      console.log(getOff);
+
       flag = 0;
     }
 
@@ -341,6 +383,7 @@ function update() {
 }
 
 function start() {
+  ufoTimer = 0;
   flag = 1;
   gameSpeed = 5;
   jumpForce = 15;
@@ -360,7 +403,7 @@ function start() {
     "#212121",
     "20"
   );
-  player = new Player(runnerImage1, canvas.width - 140, 70, 100, 100);
+  player = new Player(runnerImage1, canvas.width - 140, 20, 100, 100);
   terrain = new Land(landImage, 0, canvas.height - 20, canvas.width, 20);
 
   // update();

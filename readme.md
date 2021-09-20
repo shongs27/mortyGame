@@ -21,5 +21,5 @@
 - [x] textScore 기록
       space스타트/gameOver 화면
 
-- [ ] dino 그림 두개가 쿵쾅쿵쾅 움직인다
+- [x] dino 그림 두개가 쿵쾅쿵쾅 움직인다
       재실행 되지 않는 우주선 오류 fix
